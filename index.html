@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title> Zayan Printer </title>
+  <meta name="description" content="We provide you the best printers with reasonable cost. Our printers are reliable and execellent. We provide the best services in this area with such a great price.">
   <link
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&display=swap"
     rel="stylesheet">
@@ -2762,7 +2763,7 @@
         </div>
       </div>
       <div class="contact-form reveal d2">
-        <form id="contactForm" action="send.php" method="POST" class="contact-form reveal d2">
+<!-- <form id="contactForm" action="send.php" method="POST" class="contact-form reveal d2"> -->
 
           <div class="frow">
             <div class="fgroup">
@@ -2823,7 +2824,7 @@
             ✅ Request sent successfully!
           </p>
 
-        </form>
+        <!-- </form> -->
       </div>
   </section>
 
@@ -2932,27 +2933,27 @@
     });
 
     // 🚀 AJAX FORM SUBMIT
-    const form = document.getElementById("contactForm");
-    const successMsg = document.getElementById("successMsg");
+    // const form = document.getElementById("contactForm");
+    // const successMsg = document.getElementById("successMsg");
 
-    form.addEventListener("submit", function (e) {
-      e.preventDefault(); // stop page reload
+    // form.addEventListener("submit", function (e) {
+    //   e.preventDefault(); // stop page reload
 
-      const formData = new FormData(form);
+    //   const formData = new FormData(form);
 
-      fetch("send.php", {
-        method: "POST",
-        body: formData
-      })
-        .then(res => res.text())
-        .then(() => {
-          successMsg.style.display = "block";
-          form.reset(); // clear form
-        })
-        .catch(() => {
-          alert("Something went wrong ❌");
-        });
-    });
+    //   fetch("send.php", {
+    //     method: "POST",
+    //     body: formData
+    //   })
+    //     .then(res => res.text())
+    //     .then(() => {
+    //       successMsg.style.display = "block";
+    //       form.reset(); // clear form
+    //     })
+    //     .catch(() => {
+    //       alert("Something went wrong ❌");
+    //     });
+    //});
   </script>
 </body>
 
