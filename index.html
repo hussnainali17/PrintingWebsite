@@ -668,6 +668,18 @@
       }
     }
 
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
     .hero-animation-float {
       animation: float 4s ease-in-out infinite
     }
@@ -2762,9 +2774,7 @@
           </div>
         </div>
       </div>
-      <div class="contact-form reveal d2">
-<!-- <form id="contactForm" action="send.php" method="POST" class="contact-form reveal d2"> -->
-
+      <form id="machine-form" class="contact-form reveal d2">
           <div class="frow">
             <div class="fgroup">
               <label class="flabel">First Name</label>
@@ -2820,12 +2830,11 @@
           </div>
 
           <button type="submit" class="fsubmit">Send Request →</button>
-          <p id="successMsg" style="display:none; color:#4ADE80; margin-top:15px;">
-            ✅ Request sent successfully!
-          </p>
-
-        <!-- </form> -->
-      </div>
+          <div id="successMsg" style="display:none; margin-top:20px; padding:16px 20px; background:linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(125, 211, 252, 0.1)); border:1px solid rgba(56, 189, 248, 0.4); border-radius:8px; color:#7DD3FC; font-size:14px; font-weight:600; letter-spacing:0.5px; display:flex; align-items:center; gap:12px; animation:slideDown 0.4s ease-out;">
+            <span style="font-size:18px;">✓</span>
+            <span>Your request has been sent successfully! We'll get back to you shortly.</span>
+          </div>
+      </form>
   </section>
 
   <!-- WHATSAPP FLOATING BUTTON -->
@@ -2931,30 +2940,40 @@
         document.querySelector('.hamburger')?.classList.remove('active');
       });
     });
-
-    // 🚀 AJAX FORM SUBMIT
-    // const form = document.getElementById("contactForm");
-    // const successMsg = document.getElementById("successMsg");
-
-    // form.addEventListener("submit", function (e) {
-    //   e.preventDefault(); // stop page reload
-
-    //   const formData = new FormData(form);
-
-    //   fetch("send.php", {
-    //     method: "POST",
-    //     body: formData
-    //   })
-    //     .then(res => res.text())
-    //     .then(() => {
-    //       successMsg.style.display = "block";
-    //       form.reset(); // clear form
-    //     })
-    //     .catch(() => {
-    //       alert("Something went wrong ❌");
-    //     });
-    //});
   </script>
+
+  <!-- EmailJS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <!-- EmailJS Form Handler -->
+  <script>
+    // Initialize EmailJS when DOM is ready
+    document.addEventListener("DOMContentLoaded", function() {
+      emailjs.init("ZBRu00hXyYZfiYPzK");
+
+      document.getElementById("machine-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const serviceID = "service_ug013gf";
+        const templateID = "template_oitit3f";
+        const form = this;
+
+        emailjs.sendForm(serviceID, templateID, form)
+          .then(function(response) {
+            console.log("SUCCESS", response.status, response.text);
+            document.getElementById("successMsg").style.display = "block";
+            form.reset();
+            setTimeout(function() {
+              document.getElementById("successMsg").style.display = "none";
+            }, 5000);
+          }, function(error) {
+            console.log("FAILED", error);
+            alert("Failed to send request. Please try again.");
+          });
+      });
+    });
+  </script>
+
 </body>
 
 </html>
