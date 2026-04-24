@@ -2230,18 +2230,58 @@
     }
 
     #successMsg {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10000;
+      margin-top: 0;
+      padding: 24px 32px;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(125, 211, 252, 0.1));
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 12px;
+      color: #7DD3FC;
+      font-size: 16px;
       font-weight: 600;
-      animation: fadeIn 0.5s ease;
+      letter-spacing: 0.5px;
+      display: none;
+      align-items: center;
+      gap: 12px;
+      animation: slideDown 0.4s ease-out;
+      box-shadow: 0 8px 32px rgba(56, 189, 248, 0.2);
     }
 
-    @keyframes fadeIn {
+    #successMsg.show {
+      display: flex;
+      animation: slideDown 0.4s ease-out;
+    }
+
+    @keyframes slideDown {
       from {
         opacity: 0;
+        transform: translate(-50%, -60%);
       }
 
       to {
         opacity: 1;
+        transform: translate(-50%, -50%);
       }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+
+      to {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+      }
+    }
+
+    #successMsg.hide {
+      animation: fadeOut 0.4s ease-in forwards;
     }
   </style>
 </head>
@@ -2830,11 +2870,11 @@
           </div>
 
           <button type="submit" class="fsubmit">Send Request →</button>
-          <div id="successMsg" style="display:none; margin-top:20px; padding:16px 20px; background:linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(125, 211, 252, 0.1)); border:1px solid rgba(56, 189, 248, 0.4); border-radius:8px; color:#7DD3FC; font-size:14px; font-weight:600; letter-spacing:0.5px; display:flex; align-items:center; gap:12px; animation:slideDown 0.4s ease-out;">
-            <span style="font-size:18px;">✓</span>
-            <span>Your request has been sent successfully! We'll get back to you shortly.</span>
-          </div>
       </form>
+      <div id="successMsg">
+        <span style="font-size:20px;">✓</span>
+        <span>Your request has been sent successfully! We'll get back to you shortly.</span>
+      </div>
   </section>
 
   <!-- WHATSAPP FLOATING BUTTON -->
@@ -2947,6 +2987,8 @@
 
   <!-- EmailJS Form Handler -->
   <script>
+    let successTimeout = null;
+
     // Initialize EmailJS when DOM is ready
     document.addEventListener("DOMContentLoaded", function() {
       emailjs.init("ZBRu00hXyYZfiYPzK");
@@ -2957,14 +2999,31 @@
         const serviceID = "service_ug013gf";
         const templateID = "template_oitit3f";
         const form = this;
+        const successMsg = document.getElementById("successMsg");
 
         emailjs.sendForm(serviceID, templateID, form)
           .then(function(response) {
             console.log("SUCCESS", response.status, response.text);
-            document.getElementById("successMsg").style.display = "block";
+            
+            // Clear any existing timeout
+            if (successTimeout) clearTimeout(successTimeout);
+            
+            // Remove hide class if it exists
+            successMsg.classList.remove('hide');
+            
+            // Show message
+            successMsg.classList.add('show');
             form.reset();
-            setTimeout(function() {
-              document.getElementById("successMsg").style.display = "none";
+            
+            // Hide after 5 seconds
+            successTimeout = setTimeout(function() {
+              successMsg.classList.remove('show');
+              successMsg.classList.add('hide');
+              
+              // Reset classes after animation completes
+              setTimeout(function() {
+                successMsg.classList.remove('hide');
+              }, 400);
             }, 5000);
           }, function(error) {
             console.log("FAILED", error);
